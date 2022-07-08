@@ -178,3 +178,17 @@ main {
 #filterBookshelfList {
     width: 100%;
 }
+
+.edit_icon {
+    height: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    opacity: 50%;
+}
+
+footer {
+    text-align: center;
+    padding: 15px 30px;
+    background-color: cornflowerblue;
+    color: white;
+}
