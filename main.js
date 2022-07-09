@@ -67,13 +67,21 @@ function addBook() {
     document.getElementById('inputBookAuthor').value = '';
     document.getElementById('inputBookYear').value = '';
     document.getElementById('inputBookIsComplete').checked = false;
-    alert("Buku berhasil dimasukkan ke rak buku.");
+    // alert("Buku berhasil dimasukkan ke rak buku.");
+    Swal.fire({
+        title: `Buku berhasil dimasukkan ke rak buku.`,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'OK',
+    })
 
     document.dispatchEvent(new Event(RENDER_EVENT));
     saveData();
 }
 
-function makeBookContainer(bookObj) {
+const makeBookContainer = (bookObj) => {
     const bookTitle = document.createElement('h3');
     bookTitle.innerText = bookObj.title;
 
@@ -82,14 +90,38 @@ function makeBookContainer(bookObj) {
     titleEditIcon.classList.add('edit_icon');
     titleEditIcon.setAttribute('src', './assets/Edit_icon.png');
     titleEditIcon.addEventListener('click', function() {
-        let newTitle = prompt(`Edit Judul Buku`, bookObj.title);
-        if (newTitle !== null && newTitle !== bookObj.title) {
-            let bookIdx = findBookIdx(bookObj.id);
-            booksList[bookIdx].title = newTitle;
+        Swal.fire({
+            title: 'Edit Judul Buku',
+            input: 'text',
+            inputLabel: 'Judul Buku',
+            inputValue: bookObj.title,
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to write something!'
+              }
+            }
+        }).then(result => {
+            if (result.value) {
+                let newTitle = result.value;
+                // let newTitle = prompt(`Edit Judul Buku`, bookObj.title);
+                if (newTitle !== null && newTitle !== bookObj.title) {
+                    let bookIdx = findBookIdx(bookObj.id);
+                    booksList[bookIdx].title = newTitle;
+                    Swal.fire({
+                        title: `Judul buku berhasil diganti!`,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK',
+                    })
 
-            document.dispatchEvent(new Event(RENDER_EVENT));
-            saveData();
-        }
+                    document.dispatchEvent(new Event(RENDER_EVENT));
+                    saveData();
+                }
+            }
+        })
     })
     bookTitle.append(titleEditIcon);
 
@@ -101,14 +133,37 @@ function makeBookContainer(bookObj) {
     authorEditIcon.classList.add('edit_icon');
     authorEditIcon.setAttribute('src', './assets/Edit_icon.png');
     authorEditIcon.addEventListener('click', function() {
-        let newAuthor = prompt(`Edit Penulis Buku`, bookObj.author);
-        if (newAuthor !== null && newAuthor !== bookObj.author) {
-            let bookIdx = findBookIdx(bookObj.id);
-            booksList[bookIdx].author = newAuthor;
+        Swal.fire({
+            title: 'Edit Penulis Buku',
+            input: 'text',
+            inputLabel: 'Penulis Buku',
+            inputValue: bookObj.author,
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to write something!'
+              }
+            }
+        }).then(result => {
+            if (result.value) {
+                let newAuthor = result.value;
+                if (newAuthor !== null && newAuthor !== bookObj.author) {
+                    let bookIdx = findBookIdx(bookObj.id);
+                    booksList[bookIdx].author = newAuthor;
+                    Swal.fire({
+                        title: `Penulis berhasil diganti!`,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK',
+                    })
 
-            document.dispatchEvent(new Event(RENDER_EVENT));
-            saveData();
-        }
+                    document.dispatchEvent(new Event(RENDER_EVENT));
+                    saveData();
+                }
+            }
+        });
     })
     bookAuthor.append(authorEditIcon);
 
@@ -120,16 +175,47 @@ function makeBookContainer(bookObj) {
     yearEditIcon.classList.add('edit_icon');
     yearEditIcon.setAttribute('src', './assets/Edit_icon.png');
     yearEditIcon.addEventListener('click', function() {
-        let newYear = prompt(`Edit Tahun Buku`, bookObj.year);
-        if (newYear !== null && newYear !== bookObj.year && !isNaN(newYear)) {
-            let bookIdx = findBookIdx(bookObj.id);
-            booksList[bookIdx].year = newYear;
+        Swal.fire({
+            title: 'Edit Tahun Buku',
+            input: 'text',
+            inputLabel: 'Tahun Buku',
+            inputValue: bookObj.year,
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to write something!'
+              }
+            }
+        }).then(result => {
+            if (result.value) {
+                let newYear = result.value;
+                if (newYear !== null && newYear !== bookObj.year && !isNaN(newYear)) {
+                    let bookIdx = findBookIdx(bookObj.id);
+                    booksList[bookIdx].year = newYear;
 
-            document.dispatchEvent(new Event(RENDER_EVENT));
-            saveData();
-        } else if (isNaN(newYear)) {
-            alert("Year should be a number!");
-        }
+                    document.dispatchEvent(new Event(RENDER_EVENT));
+                    saveData();
+                    Swal.fire({
+                        title: `Tahun berhasil diganti!`,
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK',
+                    })
+                } else if (isNaN(newYear)) {
+                    // alert("Year should be a number!");
+                    Swal.fire({
+                        title: `Tahun harus berupa angka!`,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK',
+                    })
+                }
+            }
+        });
     })
     bookYear.append(yearEditIcon);
 
@@ -159,7 +245,20 @@ function makeBookContainer(bookObj) {
     redButton.classList.add('red');
     redButton.innerText = 'Hapus buku';
     redButton.addEventListener('click', function() {
-        confirm(`Apakah Anda yakin mau menghapus buku ${bookObj.title}?`) && removeBook(bookObj.id);
+        Swal.fire({
+            title: `Apakah Anda yakin mau menghapus buku ${bookObj.title}?`,
+            text: 'Buku yang dihapus tidak akan dapat dikembalikan lagi.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.value) {
+                removeBook(bookObj.id);
+            }
+        })
     })
 
     buttonCont.append(greenButton, redButton);
@@ -236,7 +335,15 @@ const STORAGE_KEY = 'BOOKSHELF_APPS';
  
 function isStorageExist() /* boolean */ {
     if (typeof (Storage) === undefined) {
-        alert('Maaf, peramban web Anda tidak mendukung local storage');
+        // alert('Maaf, peramban web Anda tidak mendukung local storage');
+        Swal.fire({
+            title: `Maaf, peramban web Anda tidak mendukung local storage.`,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK',
+        })
         return false;
     }
     return true;
