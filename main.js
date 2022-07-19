@@ -1,5 +1,6 @@
 const booksList = [];
 let filteredBookList = [];
+let isFiltering = false;
 const RENDER_EVENT = 'render-books';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,21 +22,13 @@ document.addEventListener(RENDER_EVENT, function () {
     const completedBookList = document.getElementById('completeBookshelfList');
     completedBookList.innerHTML = '';
 
-    for (const bookItem of booksList) {
+    for (const bookItem of (!isFiltering ? booksList : filteredBookList)) {
         const bookElement = makeBookContainer(bookItem);
         if (!bookItem.isComplete) {
             uncompletedBookList.append(bookElement);
         } else {
             completedBookList.append(bookElement);
         }
-    }
-
-    const filteredBookshelf = document.getElementById('filterBookshelfList');
-    filteredBookshelf.innerHTML = '';
-    
-    for (const bookItem of filteredBookList) {
-        const bookElement = makeFilteredBookContainer(bookItem);
-        filteredBookshelf.append(bookElement);
     }
 })
 
@@ -385,7 +378,13 @@ checkBox.addEventListener('click', function() {
 const searchButton = document.getElementById('searchSubmit');
 searchButton.addEventListener('click', function(event) {
     event.preventDefault();
-    const searchText = document.getElementById('searchBookTitle').value.toString();
-    filteredBookList = booksList.filter(book => book.title.toLowerCase().includes(searchText.toLowerCase()));
+    const searchText = document.getElementById('searchBookTitle').value.toString().trim();
+    if (searchText === ''){
+        filteredBookList = booksList;
+        isFiltering = false;
+    } else {
+        filteredBookList = booksList.filter(book => book.title.toLowerCase().includes(searchText.toLowerCase()));
+        isFiltering = true;
+    }
     document.dispatchEvent(new Event(RENDER_EVENT));
 })
