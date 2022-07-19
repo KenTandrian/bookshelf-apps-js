@@ -2,56 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bookshelf Apps</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.20/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/js/fontawesome.min.js"></script>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
   </head>
   <body>
   <header class="head_bar">
-    <h1 class="head_bar__title">Bookshelf Apps</h1>
+    <div class="header_title">
+      <i class="material-icons" style="margin-right: 20px;">book</i>
+      <h1 class="head_bar__title">MyBookshelf</h1>
+    </div>
+    <div class="search_section">
+      <form id="searchBook">
+        <label for="searchBookTitle">Filter</label>
+        <input id="searchBookTitle" type="text" placeholder="Book title...">
+        <button id="searchSubmit" type="submit">Find!</button>
+      </form>
+    </div>
   </header>
   <main>
     <section class="input_section">
-      <h2>Masukkan Buku Baru</h2>
+      <h2>Add New Book</h2>
       <form id="inputBook">
         <div class="input">
-          <label for="inputBookTitle">Judul</label>
+          <label for="inputBookTitle">Title</label>
           <input id="inputBookTitle" type="text" required>
         </div>
         <div class="input">
-          <label for="inputBookAuthor">Penulis</label>
+          <label for="inputBookAuthor">Author</label>
           <input id="inputBookAuthor" type="text" required>
         </div>
         <div class="input">
-          <label for="inputBookYear">Tahun</label>
+          <label for="inputBookYear">Year</label>
           <input id="inputBookYear" type="number" required>
         </div>
         <div class="input_inline">
-          <label for="inputBookIsComplete">Selesai dibaca</label>
+          <label for="inputBookIsComplete">Finished reading this book?</label>
           <input id="inputBookIsComplete" type="checkbox">
         </div>
-        <button id="bookSubmit" type="submit">Masukkan Buku ke rak <span id='button-span'>Belum selesai dibaca</span></button>
-      </form>
-    </section>
-    
-    <section class="search_section book_shelf">
-      <h2>Cari Buku</h2>
-      <form id="searchBook">
-        <label for="searchBookTitle">Judul</label>
-        <input id="searchBookTitle" type="text">
-        <button id="searchSubmit" type="submit">Cari</button>
+        <button id="bookSubmit" type="submit">Add to <span id='button-span'>Not finished</span> bookshelf</button>
       </form>
     </section>
     
     <section class="book_shelf">
-      <h2>Belum selesai dibaca</h2>
+      <h2>Not Finished</h2>
       
       <div id="incompleteBookshelfList" class="book_list">
   <!--      <article class="book_item">-->
@@ -68,7 +69,7 @@
     </section>
     
     <section class="book_shelf">
-      <h2>Selesai dibaca</h2>
+      <h2>Finished</h2>
       
       <div id="completeBookshelfList" class="book_list">
   <!--      <article class="book_item">-->

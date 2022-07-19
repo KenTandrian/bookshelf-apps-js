@@ -13,12 +13,55 @@ input, button {
 }
 
 .head_bar {
-    padding: 12px;
+    padding: 12px 48px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background-color: cornflowerblue;
     color: white;
+}
+
+.head_bar > .header_title {
+    display: flex;
+    align-items: center;
+}
+
+.search_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search_section > h2 {
+    color: cornflowerblue;
+}
+
+.search_section > form {
+    padding: 16px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.3fr 1.2fr auto;
+    grid-gap: 10px;
+}
+
+.search_section > form > label {
+    display: flex;
+    align-items: center;
+}
+
+.search_section > form > input {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search_section > form > button {
+    background-color: white;
+    color: cornflowerblue;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 15px;
 }
 
 main {
@@ -26,7 +69,6 @@ main {
     width: 80%;
     margin: 0 auto;
     padding: 16px;
-
 }
 
 .input_section {
@@ -86,46 +128,6 @@ main {
     margin-right: 10px;
 }
 
-.search_section {
-    margin: 16px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    border: 1px solid black;
-    border-radius: 10px;
-}
-
-.search_section > h2 {
-    color: cornflowerblue;
-}
-
-.search_section > form {
-    padding: 16px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr 0.5fr;
-    grid-gap: 10px;
-}
-
-.search_section > form > label {
-    display: flex;
-    align-items: center;
-}
-
-.search_section > form > input {
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.search_section > form > button {
-    background-color: cornflowerblue;
-    color: white;
-    border: 0;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 .book_shelf {
     margin: 16px 0 0 0;
     border: 1px solid black;
@@ -152,12 +154,19 @@ main {
     margin: 8px 0;
 }
 
+.book_shelf > .book_list > .book_item > .action {
+    display: flex;
+}
+
 .book_shelf > .book_list > .book_item > .action > button {
     border: 0;
-    padding: 5px 15px;
+    padding: 4px 12px;
     margin: 0 5px 0 0;
     border-radius: 5px;
     cursor: pointer;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 }
 
 .book_shelf > .book_list > .book_item > .action > .green {
@@ -186,9 +195,28 @@ main {
     opacity: 50%;
 }
 
+.btn-icon-size {
+    font-size: 1.15em;
+    line-height: 1.5em;
+}
+
+.btn-text {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin: 0;
+    display: inline-block;
+}
+
 footer {
     text-align: center;
     padding: 15px 30px;
     background-color: cornflowerblue;
     color: white;
+}
+
+@media only screen and (max-width: 768px) {
+    .head_bar {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

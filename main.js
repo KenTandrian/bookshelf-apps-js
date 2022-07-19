@@ -32,9 +32,7 @@ document.addEventListener(RENDER_EVENT, function () {
     }
 })
 
-function generateId() {
-    return +new Date();
-}
+function generateId() { return +new Date(); }
 
 function generateBookObj (id, title, author, year, isComplete) {
     return {
@@ -60,9 +58,9 @@ function addBook() {
     document.getElementById('inputBookAuthor').value = '';
     document.getElementById('inputBookYear').value = '';
     document.getElementById('inputBookIsComplete').checked = false;
-    // alert("Buku berhasil dimasukkan ke rak buku.");
+    
     Swal.fire({
-        title: `Buku berhasil dimasukkan ke rak buku.`,
+        title: `New Book has been added successfully.`,
         icon: 'success',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',
@@ -84,9 +82,9 @@ const makeBookContainer = (bookObj) => {
     titleEditIcon.setAttribute('src', './assets/Edit_icon.png');
     titleEditIcon.addEventListener('click', function() {
         Swal.fire({
-            title: 'Edit Judul Buku',
+            title: 'Edit Title',
             input: 'text',
-            inputLabel: 'Judul Buku',
+            inputLabel: 'Title',
             inputValue: bookObj.title,
             showCancelButton: true,
             inputValidator: (value) => {
@@ -97,12 +95,11 @@ const makeBookContainer = (bookObj) => {
         }).then(result => {
             if (result.value) {
                 let newTitle = result.value;
-                // let newTitle = prompt(`Edit Judul Buku`, bookObj.title);
                 if (newTitle !== null && newTitle !== bookObj.title) {
                     let bookIdx = findBookIdx(bookObj.id);
                     booksList[bookIdx].title = newTitle;
                     Swal.fire({
-                        title: `Judul buku berhasil diganti!`,
+                        title: `Title is changed successfully!`,
                         icon: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -119,7 +116,7 @@ const makeBookContainer = (bookObj) => {
     bookTitle.append(titleEditIcon);
 
     const bookAuthor = document.createElement('p');
-    bookAuthor.innerText = 'Penulis: ' + bookObj.author;
+    bookAuthor.innerText = 'Author: ' + bookObj.author;
 
     // EDIT AUTHOR FEATURE
     const authorEditIcon = document.createElement('img');
@@ -127,9 +124,9 @@ const makeBookContainer = (bookObj) => {
     authorEditIcon.setAttribute('src', './assets/Edit_icon.png');
     authorEditIcon.addEventListener('click', function() {
         Swal.fire({
-            title: 'Edit Penulis Buku',
+            title: 'Edit Author',
             input: 'text',
-            inputLabel: 'Penulis Buku',
+            inputLabel: 'Author',
             inputValue: bookObj.author,
             showCancelButton: true,
             inputValidator: (value) => {
@@ -144,7 +141,7 @@ const makeBookContainer = (bookObj) => {
                     let bookIdx = findBookIdx(bookObj.id);
                     booksList[bookIdx].author = newAuthor;
                     Swal.fire({
-                        title: `Penulis berhasil diganti!`,
+                        title: `Author is changed successfully!`,
                         icon: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -161,7 +158,7 @@ const makeBookContainer = (bookObj) => {
     bookAuthor.append(authorEditIcon);
 
     const bookYear = document.createElement('p');
-    bookYear.innerText = 'Tahun: ' + bookObj.year;
+    bookYear.innerText = 'Year: ' + bookObj.year;
 
     // EDIT AUTHOR FEATURE
     const yearEditIcon = document.createElement('img');
@@ -169,9 +166,9 @@ const makeBookContainer = (bookObj) => {
     yearEditIcon.setAttribute('src', './assets/Edit_icon.png');
     yearEditIcon.addEventListener('click', function() {
         Swal.fire({
-            title: 'Edit Tahun Buku',
+            title: 'Edit Year',
             input: 'text',
-            inputLabel: 'Tahun Buku',
+            inputLabel: 'Year',
             inputValue: bookObj.year,
             showCancelButton: true,
             inputValidator: (value) => {
@@ -189,7 +186,7 @@ const makeBookContainer = (bookObj) => {
                     document.dispatchEvent(new Event(RENDER_EVENT));
                     saveData();
                     Swal.fire({
-                        title: `Tahun berhasil diganti!`,
+                        title: `Year is changed successfully!`,
                         icon: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -197,9 +194,8 @@ const makeBookContainer = (bookObj) => {
                         confirmButtonText: 'OK',
                     })
                 } else if (isNaN(newYear)) {
-                    // alert("Year should be a number!");
                     Swal.fire({
-                        title: `Tahun harus berupa angka!`,
+                        title: `Year should be a number!`,
                         icon: 'error',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -222,13 +218,28 @@ const makeBookContainer = (bookObj) => {
 
     const greenButton = document.createElement('button');
     greenButton.classList.add('green');
+
     if (bookObj.isComplete) {
-        greenButton.innerText = 'Belum selesai dibaca';
+        const greenButtonIcon = document.createElement('i');
+        greenButtonIcon.classList.add('material-icons', 'btn-icon-size');
+        greenButtonIcon.innerText = 'clear';
+        greenButton.append(greenButtonIcon);
+        const greenButtonText = document.createElement('p');
+        greenButtonText.classList.add('btn-text');
+        greenButtonText.innerText = 'Not Finished';
+        greenButton.append(greenButtonText);
         greenButton.addEventListener('click', function() {
             removeFromCompleted(bookObj.id);
         })
     } else {
-        greenButton.innerText = 'Selesai dibaca';
+        const greenButtonIcon = document.createElement('i');
+        greenButtonIcon.classList.add('material-icons', 'btn-icon-size');
+        greenButtonIcon.innerText = 'check';
+        greenButton.append(greenButtonIcon);
+        const greenButtonText = document.createElement('p');
+        greenButtonText.classList.add('btn-text');
+        greenButtonText.innerText = 'Finished';
+        greenButton.append(greenButtonText);
         greenButton.addEventListener('click', function() {
             addToCompleted(bookObj.id);
         })
@@ -236,17 +247,24 @@ const makeBookContainer = (bookObj) => {
 
     const redButton = document.createElement('button');
     redButton.classList.add('red');
-    redButton.innerText = 'Hapus buku';
+    const redButtonIcon = document.createElement('i');
+    redButtonIcon.classList.add('material-icons', 'btn-icon-size');
+    redButtonIcon.innerText = 'delete';
+    redButton.append(redButtonIcon);
+    const redButtonText = document.createElement('p');
+    redButtonText.classList.add('btn-text');
+    redButtonText.innerText = 'Delete';
+    redButton.append(redButtonText);
     redButton.addEventListener('click', function() {
         Swal.fire({
-            title: `Apakah Anda yakin mau menghapus buku ${bookObj.title}?`,
-            text: 'Buku yang dihapus tidak akan dapat dikembalikan lagi.',
+            title: `Are you sure you want to delete ${bookObj.title}?`,
+            text: 'Deletion is permanent and cannot be undone.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
+            confirmButtonText: 'Yes, delete!',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.value) {
                 removeBook(bookObj.id);
@@ -256,23 +274,6 @@ const makeBookContainer = (bookObj) => {
 
     buttonCont.append(greenButton, redButton);
     bookCont.append(buttonCont);
-    return bookCont;
-}
-
-function makeFilteredBookContainer(bookObj) {
-    const bookTitle = document.createElement('h3');
-    bookTitle.innerText = bookObj.title;
-
-    const bookAuthor = document.createElement('p');
-    bookAuthor.innerText = 'Penulis: ' + bookObj.author;
-
-    const bookYear = document.createElement('p');
-    bookYear.innerText = 'Tahun: ' + bookObj.year;
-
-    const bookCont = document.createElement('article');
-    bookCont.classList.add('book_item');
-    bookCont.append(bookTitle, bookAuthor, bookYear);
-
     return bookCont;
 }
 
@@ -328,9 +329,8 @@ const STORAGE_KEY = 'BOOKSHELF_APPS';
  
 function isStorageExist() /* boolean */ {
     if (typeof (Storage) === undefined) {
-        // alert('Maaf, peramban web Anda tidak mendukung local storage');
         Swal.fire({
-            title: `Maaf, peramban web Anda tidak mendukung local storage.`,
+            title: `Sorry, your browser does not support local storage.`,
             icon: 'error',
             showCancelButton: false,
             confirmButtonColor: '#3085d6',
@@ -368,9 +368,9 @@ const checkBox = document.getElementById('inputBookIsComplete');
 const selesaiDibacaBtn = document.getElementById('button-span');
 checkBox.addEventListener('click', function() {
     if (checkBox.checked) {
-        selesaiDibacaBtn.innerText = 'Selesai dibaca'
+        selesaiDibacaBtn.innerText = 'Finished'
     } else {
-        selesaiDibacaBtn.innerText = 'Belum selesai dibaca'
+        selesaiDibacaBtn.innerText = 'Not Finished'
     }
 })
 
